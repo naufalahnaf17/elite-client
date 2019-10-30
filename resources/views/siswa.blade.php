@@ -150,6 +150,7 @@
     $('#btn-tambah-siswa').on('click' , function(){
       $('#container').hide();
       $('#tambah-siswa').show();
+      $('#simpan-data').show();
       $('#edit-data').hide();
       $('#formsiswa')[0].reset();
     });
@@ -211,18 +212,21 @@
             $('#edit-data').show();
             $('#formsiswa')[0].reset();
 
+            var id_current = data.id;
             $('#nama').val(data.nama);
+            $('#jurusan').val(data.jurusan);
 
             $('#edit-data').on('click' , function(){
 
               $.ajax({
-                url : "siswa/"+data.id,
+                url : "siswa/"+id_current,
                 type : "PUT" ,
                 data : $('#formsiswa').serialize(),
                 success : function(){
                   $('#container').show();
                   $('#tambah-siswa').hide();
                   $('#formsiswa')[0].reset();
+                  var id_current = null;
                   $('#data-siswa').DataTable().ajax.reload();
                 },
                 error : function(){
@@ -231,6 +235,13 @@
 
               });
 
+            });
+
+            $('#cancel').on('click' , function(){
+              $('#container').show();
+              $('#tambah-siswa').hide();
+              $('#formsiswa')[0].reset();
+              $('#data-siswa').DataTable().ajax.reload();
             });
 
           },
