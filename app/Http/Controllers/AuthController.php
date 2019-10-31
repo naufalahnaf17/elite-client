@@ -50,8 +50,9 @@ class AuthController extends Controller
         return redirect('login')->with('alert','Kamu harus login dulu');
     }
     else{
-      $list_menu = Session::get('daftar_menu');
-      return view('siswa' , ['list_menu' => $list_menu]);
+      $menu_satu = Session::get('menu_satu');
+      $menu_dua = Session::get('menu_dua');
+      return view('siswa' , ['menu_satu' => $menu_satu] ,['menu_dua' => $menu_dua] );
     }
 
   }
@@ -130,7 +131,8 @@ class AuthController extends Controller
                 $menu = json_decode($response_menu,true);
 
                 Session::put('api_token',$data["success"]["token"]);
-                Session::put('menu',$kode_menu);
+                Session::put('menu_satu',$menu['MenuSatu']);
+                Session::put('menu_dua',$menu['MenuDua']);
                 Session::put('nama' , $detail['success']['name']);
                 Session::put('daftar_menu' , $menu);
                 Session::put('login',TRUE);

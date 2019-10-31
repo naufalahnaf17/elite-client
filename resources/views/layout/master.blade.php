@@ -27,6 +27,10 @@
         border-radius: 8px;
         padding: 2px;
       }
+
+      .treeitem{
+        cursor: pointer;
+      }
     </style>
 
     <!-- Font Awesome CSS -->
@@ -239,33 +243,27 @@
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
+                <nav id="nav" class="sidebar-nav">
                     <ul id="sidebar-nav">
 
-                      <?php if (Session::get('menu') === 'SISWA'): ?>
-
-                        <?php foreach ($list_menu as $a): ?>
-                          <li style="width:5px;">
-                            <a href="#">
-                              <i class="metismenu-icon pe-7s-rocket"></i>
-                              {{ $a['nama'] }}
-                            </a>
-                          </li>
-                        <?php endforeach; ?>
-
+                      <?php if (Session::get('menu_satu')): ?>
+                            <li id="menu-1"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Dashboard</span></a>
+                                <ul id="list-1" aria-expanded="false" class="collapse">
+                                  <?php foreach ($menu_satu as $a): ?>
+                                    <li><a href="#">{{ $a['nama'] }}</a></li>
+                                  <?php endforeach; ?>
+                                </ul>
+                            </li>
                       <?php endif; ?>
 
-                      <?php if (Session::get('menu') === 'ADM'): ?>
-
-                        <?php foreach ($list_menu as $a): ?>
-                          <li style="width:5px:margin:auto;">
-                            <a href="#">
-                              <i class="metismenu-icon pe-7s-rocket"></i>
-                              {{ $a['nama'] }}
-                            </a>
-                          </li>
-                        <?php endforeach; ?>
-
+                      <?php if (Session::get('menu_dua')): ?>
+                            <li id="menu-2"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Master Data</span></a>
+                                <ul id="list-2" aria-expanded="false" class="collapse">
+                                  <?php foreach ($menu_dua as $a): ?>
+                                    <li><a href="#">{{ $a['nama'] }}</a></li>
+                                  <?php endforeach; ?>
+                                </ul>
+                            </li>
                       <?php endif; ?>
 
                     </ul>
@@ -303,6 +301,70 @@
     <!-- ============================================================== -->
     <!-- ============================================================== -->
 
+    <script type="text/javascript">
+
+      $('#list-1').hide();
+
+      $('#menu-1').on('click' , function(){
+          $('#list-1').toggle();
+      });
+
+      $('#list-2').hide();
+
+      $('#menu-2').on('click' , function(){
+          $('#list-2').toggle();
+      });
+
+      $('#list-3').hide();
+
+      $('#menu-3').on('click' , function(){
+          $('#list-3').toggle();
+      });
+
+      $('#list-4').hide();
+
+      $('#menu-4').on('click' , function(){
+          $('#list-4').toggle();
+      });
+
+      $('#list-5').hide();
+
+      $('#menu-5').on('click' , function(){
+          $('#list-5').toggle();
+      });
+
+      $('#list-6').hide();
+
+      $('#menu-6').on('click' , function(){
+          $('#list-6').toggle();
+      });
+
+      $('#list-7').hide();
+
+      $('#menu-7').on('click' , function(){
+          $('#list-7').toggle();
+      });
+
+      $('#list-8').hide();
+
+      $('#menu-8').on('click' , function(){
+          $('#list-8').toggle();
+      });
+
+      $('#list-9').hide();
+
+      $('#menu-9').on('click' , function(){
+          $('#list-9').toggle();
+      });
+
+      $('#list-10').hide();
+
+      $('#menu-10').on('click' , function(){
+          $('#list-10').toggle();
+      });
+
+
+    </script>
 
 </body>
 
