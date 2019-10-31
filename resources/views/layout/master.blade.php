@@ -202,7 +202,7 @@
                         <!-- User Profile -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown u-pro">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('asset_elite/images/users/1.jpg') }}" alt="user" class=""> <span class="hidden-md-down">Mark &nbsp;<i class="fa fa-angle-down"></i></span> </a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('asset_elite/images/users/1.jpg') }}" alt="user" class=""> <span class="hidden-md-down">{{ Session::get('nama') }} &nbsp;<i class="fa fa-angle-down"></i></span> </a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
@@ -241,24 +241,33 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebar-nav">
-                      <li>
-                        <a href="{{ url('/') }}">
-                          <i class="metismenu-icon pe-7s-rocket"></i>
-                          Siswa
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{{ url('/tagihan') }}">
-                          <i class="metismenu-icon pe-7s-rocket"></i>
-                           Tagihan
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{{ url('/pembayaran') }}">
-                          <i class="metismenu-icon pe-7s-rocket"></i>
-                           Pembayaran
-                        </a>
-                      </li>
+
+                      <?php if (Session::get('menu') === 'SISWA'): ?>
+
+                        <?php foreach ($list_menu as $a): ?>
+                          <li style="width:5px;">
+                            <a href="#">
+                              <i class="metismenu-icon pe-7s-rocket"></i>
+                              {{ $a['nama'] }}
+                            </a>
+                          </li>
+                        <?php endforeach; ?>
+
+                      <?php endif; ?>
+
+                      <?php if (Session::get('menu') === 'ADM'): ?>
+
+                        <?php foreach ($list_menu as $a): ?>
+                          <li style="width:5px:margin:auto;">
+                            <a href="#">
+                              <i class="metismenu-icon pe-7s-rocket"></i>
+                              {{ $a['nama'] }}
+                            </a>
+                          </li>
+                        <?php endforeach; ?>
+
+                      <?php endif; ?>
+
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

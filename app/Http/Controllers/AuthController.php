@@ -50,7 +50,8 @@ class AuthController extends Controller
         return redirect('login')->with('alert','Kamu harus login dulu');
     }
     else{
-      return view('siswa');
+      $list_menu = Session::get('daftar_menu');
+      return view('siswa' , ['list_menu' => $list_menu]);
     }
 
   }
@@ -85,11 +86,60 @@ class AuthController extends Controller
         $response_data = $response->getBody()->getContents();
 
         $data = json_decode($response_data,true);
-        if($data["success"]["token"]){
-            Session::put('api_token',$data["success"]["token"]);
-            Session::put('login',TRUE);
-            return redirect('/');
-            // echo $data["success"]["data"]["api_token"];
+        $token = $data["success"]["token"];
+        if($token){
+
+          try {
+
+            $response_details = $client->request('POST', 'http://laravel.simkug.com/siswa-api/public/api/details',[
+              'headers' => [
+                  'Authorization' => 'Bearer '.$token,
+                  'Accept'     => 'application/json',
+              ]
+            ]);
+
+          } catch (ClientException  $e) {
+            echo "<script>alert('Email Atau Password Salah')</script>";
+            return view('auth.login');
+          }
+
+          // If Focus
+          if ($response_details->getStatusCode() == 200) {
+            $data_detail = $response_details->getBody()->getContents();
+            $detail = json_decode($data_detail,true);
+            $kode_menu = $detail['success']['kode_menu'];
+
+            // Awal Mencari Data Menu
+
+            try {
+
+              $cari_menu = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/menu/'.$kode_menu,[
+                'headers' => [
+                    'Authorization' => 'Bearer '.$token,
+                    'Accept'     => 'application/json',
+                ]
+              ]);
+
+            } catch (ClientException  $e) {
+              echo "<script>alert('Terjadi Kesalahan')</script>";
+              return view('auth.login');
+            }
+
+            if ($cari_menu->getStatusCode() == 200) { // 200 OK
+                $response_menu = $cari_menu->getBody()->getContents();
+                $menu = json_decode($response_menu,true);
+
+                Session::put('api_token',$data["success"]["token"]);
+                Session::put('menu',$kode_menu);
+                Session::put('nama' , $detail['success']['name']);
+                Session::put('daftar_menu' , $menu);
+                Session::put('login',TRUE);
+                return redirect('/');
+              }
+            // Akhir Mencari Data Menu
+          }
+          // If Focus
+
         }else{
             return view('auth.login');
         }
