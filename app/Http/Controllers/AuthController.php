@@ -50,9 +50,15 @@ class AuthController extends Controller
         return redirect('login')->with('alert','Kamu harus login dulu');
     }
     else{
-      $menu_satu = Session::get('menu_satu');
-      $menu_dua = Session::get('menu_dua');
-      return view('siswa' , ['menu_satu' => $menu_satu] ,['menu_dua' => $menu_dua] );
+
+      if (Session::get('menu_siswa')) {
+        $menu_siswa = Session::get('menu_siswa');
+        return view('siswa')->with('menu_siswa' , $menu_siswa);
+      }else {
+        $menu_admin = Session::get('menu_admin');
+        return view('siswa')->with('menu_admin' , $menu_admin);
+      }
+
     }
 
   }
@@ -110,34 +116,62 @@ class AuthController extends Controller
             $detail = json_decode($data_detail,true);
             $kode_menu = $detail['success']['kode_menu'];
 
-            // Awal Mencari Data Menu
+            if ($kode_menu === 'SISWA') {
+              try {
 
-            try {
-
-              $cari_menu = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/menu/'.$kode_menu,[
-                'headers' => [
+                $cari_menu = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/menu/'.$kode_menu,[
+                  'headers' => [
                     'Authorization' => 'Bearer '.$token,
                     'Accept'     => 'application/json',
-                ]
-              ]);
+                  ]
+                ]);
 
-            } catch (ClientException  $e) {
-              echo "<script>alert('Terjadi Kesalahan')</script>";
-              return view('auth.login');
-            }
+              } catch (ClientException  $e) {
+                echo "<script>alert('Terjadi Kesalahan')</script>";
+                return view('auth.login');
+              }
 
-            if ($cari_menu->getStatusCode() == 200) { // 200 OK
+              if ($cari_menu->getStatusCode() == 200) { // 200 OK
                 $response_menu = $cari_menu->getBody()->getContents();
-                $menu = json_decode($response_menu,true);
+                $menu_siswa = json_decode($response_menu,true);
 
                 Session::put('api_token',$data["success"]["token"]);
-                Session::put('menu_satu',$menu['MenuSatu']);
-                Session::put('menu_dua',$menu['MenuDua']);
+                Session::put('menu_siswa',$menu_siswa);
                 Session::put('nama' , $detail['success']['name']);
-                Session::put('daftar_menu' , $menu);
+                Session::put('daftar_menu' , $menu_siswa);
                 Session::put('login',TRUE);
                 return redirect('/');
               }
+            }
+
+            if ($kode_menu === 'ADM') {
+              try {
+
+                $cari_menu = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/menu/'.$kode_menu,[
+                  'headers' => [
+                    'Authorization' => 'Bearer '.$token,
+                    'Accept'     => 'application/json',
+                  ]
+                ]);
+
+              } catch (ClientException  $e) {
+                echo "<script>alert('Terjadi Kesalahan')</script>";
+                return view('auth.login');
+              }
+
+              if ($cari_menu->getStatusCode() == 200) { // 200 OK
+                $response_menu = $cari_menu->getBody()->getContents();
+                $menu_admin = json_decode($response_menu,true);
+
+                Session::put('api_token',$data["success"]["token"]);
+                Session::put('menu_admin',$menu_admin);
+                Session::put('nama' , $detail['success']['name']);
+                Session::put('daftar_menu' , $menu_admin);
+                Session::put('login',TRUE);
+                return redirect('/');
+              }
+            }
+
             // Akhir Mencari Data Menu
           }
           // If Focus
@@ -154,6 +188,10 @@ class AuthController extends Controller
   public function logout(){
     Session::flush();
     return redirect('login')->with('alert','Kamu sudah logout');
+  }
+
+  public function cek(){
+    return response('anjing');
   }
 
 }

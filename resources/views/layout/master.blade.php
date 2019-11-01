@@ -246,24 +246,57 @@
                 <nav id="nav" class="sidebar-nav">
                     <ul id="sidebar-nav">
 
-                      <?php if (Session::get('menu_satu')): ?>
-                            <li id="menu-1"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Dashboard</span></a>
-                                <ul id="list-1" aria-expanded="false" class="collapse">
-                                  <?php foreach ($menu_satu as $a): ?>
-                                    <li><a href="#">{{ $a['nama'] }}</a></li>
-                                  <?php endforeach; ?>
-                                </ul>
-                            </li>
+
+                      <?php if (Session::get('menu_siswa')): ?>
+
+                        <li>
+                          <a class="waves-effect waves-dark" aria-expanded="false" href="{{ url('/') }}">
+                            <span class="hide-menu">Dashboard</span>
+                          </a>
+                        </li>
+
+                          <li id="menu-1"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Master Data</span></a>
+                              <ul id="list-1" aria-expanded="false" class="collapse">
+                                <?php foreach ($menu_siswa['MenuSatu'] as $a): ?>
+                                  <li><a href="#">{{ $a['nama'] }}</a></li>
+                                <?php endforeach; ?>
+                              </ul>
+                          </li>
+
+                          <li id="menu-2"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Transaksi</span></a>
+                              <ul id="list-2" aria-expanded="false" class="collapse">
+                                <?php foreach ($menu_siswa['MenuDua'] as $a): ?>
+                                  <li><a href="#">{{ $a['nama'] }}</a></li>
+                                <?php endforeach; ?>
+                              </ul>
+                          </li>
+
+                          <li id="menu-3"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Laporan</span></a>
+                              <ul id="list-3" aria-expanded="false" class="collapse">
+                                <?php foreach ($menu_siswa['MenuTiga'] as $a): ?>
+                                  <li><a href="#">{{ $a['nama'] }}</a></li>
+                                <?php endforeach; ?>
+                              </ul>
+                          </li>
+
                       <?php endif; ?>
 
-                      <?php if (Session::get('menu_dua')): ?>
-                            <li id="menu-2"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Master Data</span></a>
-                                <ul id="list-2" aria-expanded="false" class="collapse">
-                                  <?php foreach ($menu_dua as $a): ?>
-                                    <li><a href="#">{{ $a['nama'] }}</a></li>
-                                  <?php endforeach; ?>
-                                </ul>
-                            </li>
+                      <?php if (Session::get('menu_admin')): ?>
+
+                        <li>
+                          <a class="waves-effect waves-dark" aria-expanded="false" href="{{ url('/') }}">
+                            <span class="hide-menu">Dashboard</span>
+                          </a>
+                        </li>
+
+                        <li id="menu-3"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Laporan</span></a>
+                            <ul id="list-3" aria-expanded="false" class="collapse">
+                              <?php foreach ($menu_admin['AdminMenu'] as $a): ?>
+                                <li><a href="#">{{ $a['nama'] }}</a></li>
+                              <?php endforeach; ?>
+                            </ul>
+                        </li>
+
                       <?php endif; ?>
 
                     </ul>
