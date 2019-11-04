@@ -19,3 +19,16 @@ Route::get('/logout' , 'AuthController@logout');
 
 Route::get('data' , 'AuthController@json')->name('data');
 Route::resource('siswa' , 'SiswaController');
+
+//masuk session
+
+Route::get('data-jenis', 'DataJenisController@index');
+Route::get('data-jurusan', 'DataJurusanController@index');
+Route::get('siswa' , 'SiswaController@index');
+Route::get('tagihan' , 'TagihanController@index');
+Route::get('pembayaran' , 'PembayaranController@index');
+Route::get('laporan-tagihan' , 'LaporanTagihanController@index');
+Route::get('laporan-pembayaran' , 'LaporanPembayaranController@index');
+Route::get('laporan-saldo' , 'LaporanSaldoController@index');
+
+//masuk session

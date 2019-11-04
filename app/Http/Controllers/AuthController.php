@@ -53,10 +53,12 @@ class AuthController extends Controller
 
       if (Session::get('menu_siswa')) {
         $menu_siswa = Session::get('menu_siswa');
-        return view('siswa')->with('menu_siswa' , $menu_siswa);
+        $form_siswa = Session::get('form_siswa');
+        return view('siswa.siswa')->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
       }else {
         $menu_admin = Session::get('menu_admin');
-        return view('siswa')->with('menu_admin' , $menu_admin);
+        $form_admin = Session::get('form_admin');
+        return view('siswa.siswa')->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
       }
 
     }
@@ -64,7 +66,11 @@ class AuthController extends Controller
   }
 
   public function login(){
-    return view('auth.login');
+    if (!Session::get('login')) {
+      return view('auth.login');
+    }else {
+      return view('siswa.siswa');
+    }
   }
 
   public function login_store(Request $request){
@@ -131,12 +137,29 @@ class AuthController extends Controller
                 return view('auth.login');
               }
 
-              if ($cari_menu->getStatusCode() == 200) { // 200 OK
+              try {
+
+                $cari_form = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/mform/siswa/',[
+                  'headers' => [
+                    'Authorization' => 'Bearer '.$token,
+                    'Accept'     => 'application/json',
+                  ]
+                ]);
+
+              } catch (ClientException  $e) {
+                echo "<script>alert('Terjadi Kesalahan')</script>";
+                return view('auth.login');
+              }
+
+              if ($cari_menu->getStatusCode() == 200 && $cari_form->getStatusCode() == 200 ) { // 200 OK
                 $response_menu = $cari_menu->getBody()->getContents();
+                $reponse_form = $cari_form->getBody()->getContents();
                 $menu_siswa = json_decode($response_menu,true);
+                $form_siswa = json_decode($reponse_form,true);
 
                 Session::put('api_token',$data["success"]["token"]);
                 Session::put('menu_siswa',$menu_siswa);
+                Session::put('form_siswa',$form_siswa);
                 Session::put('nama' , $detail['success']['name']);
                 Session::put('daftar_menu' , $menu_siswa);
                 Session::put('login',TRUE);
@@ -159,12 +182,30 @@ class AuthController extends Controller
                 return view('auth.login');
               }
 
-              if ($cari_menu->getStatusCode() == 200) { // 200 OK
+              try {
+
+                $admin_form = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/mform/admin/',[
+                  'headers' => [
+                    'Authorization' => 'Bearer '.$token,
+                    'Accept'     => 'application/json',
+                  ]
+
+                ]);
+
+              } catch (ClientException  $e) {
+                echo "<script>alert('Terjadi Kesalahan')</script>";
+                return view('auth.login');
+              }
+
+              if ($cari_menu->getStatusCode() == 200 && $admin_form->getStatusCode() == 200) { // 200 OK
                 $response_menu = $cari_menu->getBody()->getContents();
+                $response_admin = $admin_form->getBody()->getContents();
                 $menu_admin = json_decode($response_menu,true);
+                $form_admin = json_decode($response_admin,true);
 
                 Session::put('api_token',$data["success"]["token"]);
                 Session::put('menu_admin',$menu_admin);
+                Session::put('form_admin',$form_admin);
                 Session::put('nama' , $detail['success']['name']);
                 Session::put('daftar_menu' , $menu_admin);
                 Session::put('login',TRUE);

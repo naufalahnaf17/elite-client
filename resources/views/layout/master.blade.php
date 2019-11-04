@@ -257,24 +257,27 @@
 
                           <li id="menu-1"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Master Data</span></a>
                               <ul id="list-1" aria-expanded="false" class="collapse">
+                                <?php $i = 0 ?>
                                 <?php foreach ($menu_siswa['MenuSatu'] as $a): ?>
-                                  <li><a href="#">{{ $a['nama'] }}</a></li>
+                                  <li><a href="{{ url($form_siswa['FormSatu'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
                                 <?php endforeach; ?>
                               </ul>
                           </li>
 
                           <li id="menu-2"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Transaksi</span></a>
                               <ul id="list-2" aria-expanded="false" class="collapse">
+                                <?php $i = 0 ?>
                                 <?php foreach ($menu_siswa['MenuDua'] as $a): ?>
-                                  <li><a href="#">{{ $a['nama'] }}</a></li>
+                                  <li><a href="{{ url($form_siswa['FormDua'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
                                 <?php endforeach; ?>
                               </ul>
                           </li>
 
                           <li id="menu-3"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Laporan</span></a>
                               <ul id="list-3" aria-expanded="false" class="collapse">
+                                <?php $i = 0 ?>
                                 <?php foreach ($menu_siswa['MenuTiga'] as $a): ?>
-                                  <li><a href="#">{{ $a['nama'] }}</a></li>
+                                  <li><a href="{{ url($form_siswa['FormTiga'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
                                 <?php endforeach; ?>
                               </ul>
                           </li>
@@ -291,8 +294,9 @@
 
                         <li id="menu-3"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Laporan</span></a>
                             <ul id="list-3" aria-expanded="false" class="collapse">
+                              <?php $i = 0 ?>
                               <?php foreach ($menu_admin['AdminMenu'] as $a): ?>
-                                <li><a href="#">{{ $a['nama'] }}</a></li>
+                                <li><a href="{{ url($form_admin['FormSatu'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
                               <?php endforeach; ?>
                             </ul>
                         </li>
