@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('SiswaModul.layout.master')
 
 @section('meta')
 <meta name="csrf-token" content="{{ csrf_token() }}">

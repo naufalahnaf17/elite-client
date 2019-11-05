@@ -1,10 +1,10 @@
-@extends('layout.master')
+@extends('SiswaModul.layout.master')
 
 @section('meta')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
-@section('title' , 'Data Laporan Saldo | Siswa')
+@section('title' , 'Data Jenis | Siswa')
 
 @section('container')
 
@@ -12,10 +12,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Data Laporan Saldo
+                <h4 class="card-title">Data Jenis
                 <button type="button" id="btn-tambah-siswa" class="btn btn-info ml-2" style="float:right;"><i class="fa fa-plus-circle"></i> Tambah</button>
                 </h4>
-                <h6 class="card-subtitle">Tabel Data Laporan Saldo</h6>
+                <h6 class="card-subtitle">Tabel Data Jenis</h6>
                 <hr>
             </div>
         </div>

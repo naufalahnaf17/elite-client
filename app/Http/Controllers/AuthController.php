@@ -34,7 +34,7 @@ class AuthController extends Controller
 
     } catch (ClientException $e) {
       echo "<script>alert('Session Habis Login Dulu')</script>";
-      return view('auth.login');
+      return view('SiswaModul.auth.login');
     }
 
     return Datatables::of($siswa)
@@ -54,11 +54,11 @@ class AuthController extends Controller
       if (Session::get('menu_siswa')) {
         $menu_siswa = Session::get('menu_siswa');
         $form_siswa = Session::get('form_siswa');
-        return view('siswa.siswa')->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
+        return view('SiswaModul.siswa.siswa')->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
       }else {
         $menu_admin = Session::get('menu_admin');
         $form_admin = Session::get('form_admin');
-        return view('siswa.siswa')->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
+        return view('SiswaModul.siswa.siswa')->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
       }
 
     }
@@ -67,9 +67,9 @@ class AuthController extends Controller
 
   public function login(){
     if (!Session::get('login')) {
-      return view('auth.login');
+      return view('SiswaModul.auth.login');
     }else {
-      return view('siswa.siswa');
+      return view('SiswaModul.siswa.siswa');
     }
   }
 
@@ -91,7 +91,7 @@ class AuthController extends Controller
 
     } catch (ClientException  $e) {
       echo "<script>alert('Email Atau Password Salah')</script>";
-      return view('auth.login');
+      return view('SiswaModul.auth.login');
     }
 
 
@@ -113,7 +113,7 @@ class AuthController extends Controller
 
           } catch (ClientException  $e) {
             echo "<script>alert('Email Atau Password Salah')</script>";
-            return view('auth.login');
+            return view('SiswaModul.auth.login');
           }
 
           // If Focus
@@ -134,7 +134,7 @@ class AuthController extends Controller
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('auth.login');
+                return view('SiswaModul.auth.login');
               }
 
               try {
@@ -148,7 +148,7 @@ class AuthController extends Controller
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('auth.login');
+                return view('SiswaModul.auth.login');
               }
 
               if ($cari_menu->getStatusCode() == 200 && $cari_form->getStatusCode() == 200 ) { // 200 OK
@@ -179,7 +179,7 @@ class AuthController extends Controller
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('auth.login');
+                return view('SiswaModul.auth.login');
               }
 
               try {
@@ -194,7 +194,7 @@ class AuthController extends Controller
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('auth.login');
+                return view('SiswaModul.auth.login');
               }
 
               if ($cari_menu->getStatusCode() == 200 && $admin_form->getStatusCode() == 200) { // 200 OK
@@ -218,10 +218,10 @@ class AuthController extends Controller
           // If Focus
 
         }else{
-            return view('auth.login');
+            return view('SiswaModul.auth.login');
         }
     }else{
-        return view('auth.login');
+        return view('SiswaModul.auth.login');
     }
 
   }
