@@ -76,21 +76,55 @@
 
   <!-- Akhir card -->
 
-  <h3 class="mt-3">Grafik Dashboard Admin </h3>
-  <div id="siswaChart" style="height: 200px;padding:10px;background-color:#fff"></div>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
   <script type="text/javascript">
-    Morris.Bar({
-    element: 'siswaChart',
-    data: [
-    { y: 'Siswa', a: {{$jumlahSiswa }} },
-    { y: 'Tagihan', a: 0 },
-    { y: 'Pembayaran', a: 0 }
-    ],
-    xkey: 'y',
-    ykeys: ['a'],
-    labels: ['Jumlah']
-    });
+  Highcharts.chart('container', {
+
+  chart: {
+      type: 'column'
+  },
+
+  title: {
+      text: 'Dashboard Grafik Data'
+  },
+
+  xAxis: {
+      categories: ['Jumlah Data']
+  },
+
+  yAxis: {
+      allowDecimals: true,
+      min: 0,
+      title: {
+          text: 'Data Yang Ada'
+      }
+  },
+
+  plotOptions: {
+      column: {
+          stacking: 'normal'
+      }
+  },
+
+  series: [{
+      name: 'Siswa',
+      data: [ {{ $jumlahSiswa }}],
+      stack: 'male'
+    },{
+        name: 'Tagihan',
+        data: [0],
+        stack: 'tagihan'
+    },{
+        name: 'Pembayaran',
+        data: [0],
+        stack: 'pembayaran'
+    }]
+});
   </script>
 
 @endsection
