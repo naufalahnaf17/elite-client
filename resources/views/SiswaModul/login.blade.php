@@ -27,7 +27,7 @@
 
   <style media="screen">
     body{
-      background-image: url('/images/desk.jpg');
+      background-image: url('{{ url("/images/desk.jpg") }}');
       background-repeat: no-repeat;
       background-size: cover;
       width: 100%;
