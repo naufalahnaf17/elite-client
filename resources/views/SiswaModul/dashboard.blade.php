@@ -39,53 +39,57 @@
 
   <!-- Awal Card -->
   <div class="row">
-    <div id="kartu" class="col-sm-4">
-      <div id="card-satu" class="card bg-warning">
-        <div class="card-body justify-content-center">
-          <center><h4 class="card-text">Siswa</h4>
-          <img id="cuk" src="{{url('/images/student.png')}}"><br><br>
-          <p class="card-text">{{ $jumlahSiswa }}</p>
-          <a href="{{url('/data-siswa')}}" class="btn btn-primary">Lihat Detail</a></center>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <center>
+            <h4>Siswa</h4>
+            <hr>
+            <h6>{{ $jumlahSiswa }} </h6>
+          </center>
         </div>
       </div>
     </div>
-    <div id="kartu" class="col-sm-4">
-      <div id="card-satu" class="card bg-success">
-        <div class="card-body justify-content-center">
-          <center><h4 class="card-text">Tagihan</h4>
-          <img id="cuk" src="{{url('/images/notebook.png')}}"><br><br>
-          <p class="card-text">Belum Ada</p>
-          <a href="{{url('/data-tagihan')}}" class="btn btn-primary">Lihat Detail</a></center>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <center>
+            <h4>Tagihan</h4>
+            <hr>
+            <h6>0 </h6>
+          </center>
         </div>
       </div>
     </div>
-    <div id="kartu" class="col-sm-4">
-      <div id="card-satu" class="card bg-danger">
-        <div class="card-body justify-content-center">
-          <center><h4 class="card-text">Pembayaran</h4>
-          <img id="cuk" src="{{url('/images/money.png')}}"><br><br>
-          <p class="card-text">Belum Ada</p>
-          <a href="{{url('/data-pembayaran')}}" class="btn btn-primary">Lihat Detail</a></center>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <center>
+            <h4>Pembayaran</h4>
+            <hr>
+            <h6>0 </h6>
+          </center>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Akhir Card -->
+    </div>
 
-  <h3>Grafik Dashboard Admin </h3>
-  <div id="siswaChart" style="height: 200px;"></div>
+  <!-- Akhir card -->
+
+  <h3 class="mt-3">Grafik Dashboard Admin </h3>
+  <div id="siswaChart" style="height: 200px;padding:10px;background-color:#fff"></div>
 
   <script type="text/javascript">
     Morris.Bar({
     element: 'siswaChart',
     data: [
-    { y: 'siswa', a: {{ $jumlahSiswa }} },
-    { y: 'tagihan', a: 0 },
-    { y: 'pembayaran', a: 0 }
+    { y: 'Siswa', a: {{$jumlahSiswa }} },
+    { y: 'Tagihan', a: 0 },
+    { y: 'Pembayaran', a: 0 }
     ],
     xkey: 'y',
     ykeys: ['a'],
-    labels: ['Size']
+    labels: ['Jumlah']
     });
   </script>
 
