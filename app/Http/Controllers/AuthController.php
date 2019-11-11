@@ -357,6 +357,7 @@ class AuthController extends Controller
               'email' => $request->input('email'),
               'password' => $request->input('password'),
               'url_photo' => $url_default,
+              'kode_menu' => 'SISWA',
               'confirm_password' => $request->input('confirm_password')
           ]
       ]);
