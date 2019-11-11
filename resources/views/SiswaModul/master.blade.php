@@ -89,6 +89,38 @@
     <!-- Datatable -->
 
     <script src="{{ asset('asset_elite/node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+
+    <!-- Get Photo With Url -->
+    <?php
+      $client = new \GuzzleHttp\Client;
+
+      if (Session::get('url') === '') {
+        echo "<script> console.log('no image') </script>";
+      }else {
+
+        try {
+
+          $response_detail = $client->request('GET', Session::get('url'),[
+            'headers' => [
+              'Authorization' => 'Bearer '.Session::get('api_token'),
+              'Accept'     => 'application/json',
+            ]
+          ]);
+
+        } catch (ClientException  $e) {
+          echo "<script>alert('Email Atau Password Salah')</script>";
+          return view('login');
+        }
+
+        if ($response_detail->getStatusCode() == 200) { // 200 OK
+          $data = $response_detail->getBody()->getContents();
+          $photo = 'data:image/png;base64,' . base64_encode($data);
+        }
+
+      }
+
+     ?>
+
 </head>
 
 <body class="skin-default fixed-layout">
@@ -206,10 +238,23 @@
                         <!-- User Profile -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown u-pro">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('asset_elite/images/users/1.jpg') }}" alt="user" class=""> <span class="hidden-md-down">{{ Session::get('nama') }} &nbsp;<i class="fa fa-angle-down"></i></span> </a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                <?php if (Session::get('url') === null || Session::get('url') === ''): ?>
+                                  <img src="{{ asset('asset_elite/images/users/1.jpg') }}" alt="user" class="">
+                                <?php endif; ?>
+
+                                <?php if (Session::get('url')): ?>
+                                  <img src="<?= $photo ?>" alt="user" class="">
+                                <?php endif; ?>
+
+                              <span class="hidden-md-down">{{ Session::get('nama') }} &nbsp;
+                                <i class="fa fa-angle-down"></i>
+                              </span>
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                                <a href="{{ url('my-profile') }}" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
                                 <!-- text-->
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
                                 <!-- text-->
@@ -245,7 +290,6 @@
                 <!-- Sidebar navigation-->
                 <nav id="nav" class="sidebar-nav">
                     <ul id="sidebar-nav">
-
 
                       <?php if (Session::get('menu_siswa')): ?>
 

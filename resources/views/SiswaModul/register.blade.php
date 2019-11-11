@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login | Client</title>
+	<title>Register | Client</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -40,24 +40,33 @@
 </head>
 <body>
 
-	<div id="loginForm" class="limiter" style="background-color:#3213;">
+	<div id="registerForm" class="limiter" style="background-color:#3213;">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90"  style="background-color:#fff;padding:35px;">
-				<form id="loginForm" class="login100-form validate-form flex-sb flex-w" action="{{ url('/login') }}" method='post'>
+				<form id="loginForm" class="login100-form validate-form flex-sb flex-w" action="{{ url('/register') }}" method='post'>
           @csrf
 					<span class="login100-form-title p-b-51">
-						Sign In
+						Register Account
 					</span>
 
+          <div class="wrap-input100 validate-input m-b-16" data-validate = "Name is required">
+						<input class="input100" type="text" name="name" placeholder="Full Name">
+						<span class="focus-input100"></span>
+					</div>
 
-					<div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
+          <div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
 						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>
 					</div>
 
-
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
 						<input class="input100" type="password" name="password" placeholder="Password">
+						<span class="focus-input100"></span>
+					</div>
+
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Confirm Password is required">
+						<input class="input100" type="password" name="confirm_password" placeholder="Confirm Password">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -70,15 +79,15 @@
 						</div>
 
 						<div>
-							<button id="register" class="txt1">
-								<a href="{{ url('/register') }}" target="_blank">Register Account</a> 
+							<button id="login" class="txt1">
+								<a href="{{ url('/login') }}" >Login Account</a>
 							</button>
 						</div>
 					</div>
 
 					<div class="container-login100-form-btn m-t-17">
 						<button class="login100-form-btn" type="submit" name="submit">
-							Login
+							Register Account
 						</button>
 					</div>
 

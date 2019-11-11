@@ -14,7 +14,9 @@
 
 Route::get('/' , 'AuthController@index');
 Route::get('/login' , 'AuthController@login');
+Route::get('/register' , 'AuthController@register');
 Route::post('/login' , 'AuthController@login_store');
+Route::post('/register' , 'AuthController@register_store');
 Route::get('/logout' , 'AuthController@logout');
 
 Route::get('data' , 'AuthController@json')->name('data');
@@ -32,3 +34,7 @@ Route::get('laporan-pembayaran' , 'LaporanPembayaranController@index');
 Route::get('laporan-saldo' , 'LaporanSaldoController@index');
 
 //masuk session
+
+// Ambil Data Profile
+Route::get('my-profile' , 'AuthController@myprofile');
+Route::post('update-profile/{id}' , 'AuthController@updateProfile');

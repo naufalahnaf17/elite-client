@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use DataTables;
+use Illuminate\Support\Facades\File;
 
 class AuthController extends Controller
 {
@@ -72,6 +73,11 @@ class AuthController extends Controller
       return view('SiswaModul.siswa');
     }
   }
+
+  public function register(){
+    return view('SiswaModul.register');
+  }
+
 
   public function login_store(Request $request){
 
@@ -161,6 +167,7 @@ class AuthController extends Controller
                 Session::put('menu_siswa',$menu_siswa);
                 Session::put('form_siswa',$form_siswa);
                 Session::put('nama' , $detail['success']['name']);
+                Session::put('url',$detail['success']['url_photo']);
                 Session::put('daftar_menu' , $menu_siswa);
                 Session::put('login',TRUE);
                 return redirect('/');
@@ -207,6 +214,7 @@ class AuthController extends Controller
                 Session::put('menu_admin',$menu_admin);
                 Session::put('form_admin',$form_admin);
                 Session::put('nama' , $detail['success']['name']);
+                Session::put('url' , $detail['success']['url_photo']);
                 Session::put('daftar_menu' , $menu_admin);
                 Session::put('login',TRUE);
                 return redirect('/');
@@ -231,8 +239,138 @@ class AuthController extends Controller
     return redirect('login')->with('alert','Kamu sudah logout');
   }
 
-  public function cek(){
-    return response('anjing');
+  public function myprofile(){
+
+    $client = new Client;
+
+      try {
+
+        $response_details = $client->request('POST', 'http://laravel.simkug.com/siswa-api/public/api/details',[
+          'headers' => [
+              'Authorization' => 'Bearer '.Session::get('api_token'),
+              'Accept'     => 'application/json',
+          ]
+        ]);
+
+      } catch (ClientException  $e) {
+        echo "<script>alert('Terjadi Kesalahan Saat Mengambil Pofile Anda')</script>";
+        return redirect('/');
+      }
+
+      // If Focus
+      if ($response_details->getStatusCode() == 200) {
+        $data_detail = $response_details->getBody()->getContents();
+        $detail = json_decode($data_detail,true);
+        $data = $detail['success'];
+
+        if (Session::get('menu_siswa')) {
+          $menu_siswa = Session::get('menu_siswa');
+          $form_siswa = Session::get('form_siswa');
+          return view('SiswaModul.my-profile' , [ 'data' => $data ])->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
+        }else {
+          $menu_admin = Session::get('menu_admin');
+          $form_admin = Session::get('form_admin');
+          return view('SiswaModul.my-profile' , [ 'data' => $data  ])->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
+        }
+
+      }
+
+  }
+
+  public function updateProfile($id,Request $request)
+  {
+
+    $file = $request->file('photo');
+    $filename = $file->getClientOriginalName();
+    $file->move(public_path('/') ,  $filename);
+
+    $client = new Client();
+
+    try {
+
+      $response = $client->request('POST', 'http://laravel.simkug.com/siswa-api/public/api/file/upload',[
+
+        'headers' => [
+              'Authorization' => 'Bearer ' . Session::get('api_token'),
+          ],
+          'multipart' => [
+              [
+                  'Content-type' => 'multipart/form-data',
+                  'name' => 'photo',
+                  'contents' => fopen(public_path($filename), 'r')
+              ]
+          ]
+
+      ]);
+
+    } catch (ClientException  $e) {
+      echo "<script>alert('Email Atau Password Salah')</script>";
+      return view('login');
+    }
+
+    if ($response->getStatusCode() == 200) { // 200 OK
+        $response_data = $response->getBody()->getContents();
+
+        $data = json_decode($response_data,true);
+        File::delete($filename);
+        $url_photo = $data['url'];
+
+        try {
+
+          $response_edit = $client->request('POST', 'http://laravel.simkug.com/siswa-api/public/api/details/' . $id,[
+              'form_params' => [
+                  'url_photo' => $url_photo
+              ],
+              'headers' => [
+                  'Authorization' => 'Bearer '. Session::get('api_token'),
+                  'Accept'     => 'application/json',
+              ]
+          ]);
+
+        } catch (ClientException  $e) {
+          echo "<script>alert('Terjadi Kesalahan')</script>";
+        }
+
+        if ($response_edit->getStatusCode() == 200) {
+          Session::flush();
+          return redirect('login')->with('alert','Kamu sudah logout');
+        }
+
+      }else {
+        Session::flush();
+        return redirect('login')->with('alert','Kamu sudah logout');
+      }
+
+  }
+
+  public function register_store(Request $request)
+  {
+
+    $url_default = 'http://laravel.simkug.com/siswa-api/public/api/file/download/SbBdWLLpQ5.png';
+    $client = new Client();
+
+    try {
+
+      $response = $client->request('POST', 'http://laravel.simkug.com/siswa-api/public/api/register',[
+          'form_params' => [
+              'name' => $request->input('name'),
+              'email' => $request->input('email'),
+              'password' => $request->input('password'),
+              'url_photo' => $url_default,
+              'confirm_password' => $request->input('confirm_password')
+          ]
+      ]);
+
+    } catch (ClientException  $e) {
+      echo "<script>alert('Terjadi Kesalahan Saat Register')</script>";
+      return view('SiswaModul.login');
+    }
+
+
+    if ($response->getStatusCode() == 200) {
+      return view('SiswaModul.login');
+    }
+
   }
 
 }
