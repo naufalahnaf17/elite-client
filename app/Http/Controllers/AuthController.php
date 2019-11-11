@@ -282,7 +282,7 @@ class AuthController extends Controller
 
     $file = $request->file('photo');
     $filename = $file->getClientOriginalName();
-    $file->move(public_path('/') ,  $filename);
+    $file->move(public_path('/upload') ,  $filename);
 
     $client = new Client();
 
@@ -297,7 +297,7 @@ class AuthController extends Controller
               [
                   'Content-type' => 'multipart/form-data',
                   'name' => 'photo',
-                  'contents' => fopen(public_path($filename), 'r')
+                  'contents' => fopen(public_path('upload/' . $filename), 'r')
               ]
           ]
 
@@ -312,7 +312,7 @@ class AuthController extends Controller
         $response_data = $response->getBody()->getContents();
 
         $data = json_decode($response_data,true);
-        File::delete($filename);
+        File::delete(public_path('upload/' . $filename));
         $url_photo = $data['url'];
 
         try {
