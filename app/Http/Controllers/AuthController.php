@@ -347,6 +347,7 @@ class AuthController extends Controller
   {
 
     $url_default = 'http://laravel.simkug.com/siswa-api/public/api/file/download/SbBdWLLpQ5.png';
+    $kode_menu = 'SISWA';
     $client = new Client();
 
     try {
@@ -357,7 +358,7 @@ class AuthController extends Controller
               'email' => $request->input('email'),
               'password' => $request->input('password'),
               'url_photo' => $url_default,
-              'kode_menu' => 'SISWA',
+              'kode_menu' => $kode_menu,
               'confirm_password' => $request->input('confirm_password')
           ]
       ]);
