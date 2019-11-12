@@ -1,4 +1,4 @@
-@extends('SiswaModul.master')
+@extends('SiswaModul.Umum.master')
 
 <?php
 

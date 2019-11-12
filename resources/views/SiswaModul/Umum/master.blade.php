@@ -303,7 +303,7 @@
                               <ul id="list-1" aria-expanded="false" class="collapse">
                                 <?php $i = 0 ?>
                                 <?php foreach ($menu_siswa['MenuSatu'] as $a): ?>
-                                  <li><a href="{{ url($form_siswa['FormSatu'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
+                                  <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
                                 <?php endforeach; ?>
                               </ul>
                           </li>
@@ -312,7 +312,7 @@
                               <ul id="list-2" aria-expanded="false" class="collapse">
                                 <?php $i = 0 ?>
                                 <?php foreach ($menu_siswa['MenuDua'] as $a): ?>
-                                  <li><a href="{{ url($form_siswa['FormDua'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
+                                  <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
                                 <?php endforeach; ?>
                               </ul>
                           </li>
@@ -321,7 +321,7 @@
                               <ul id="list-3" aria-expanded="false" class="collapse">
                                 <?php $i = 0 ?>
                                 <?php foreach ($menu_siswa['MenuTiga'] as $a): ?>
-                                  <li><a href="{{ url($form_siswa['FormTiga'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
+                                  <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
                                 <?php endforeach; ?>
                               </ul>
                           </li>
@@ -340,7 +340,44 @@
                             <ul id="list-3" aria-expanded="false" class="collapse">
                               <?php $i = 0 ?>
                               <?php foreach ($menu_admin['AdminMenu'] as $a): ?>
-                                <li><a href="{{ url($form_admin['FormSatu'][$i++]['nama_form']) }}">{{ $a['nama'] }}</a></li>
+                                <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
+                              <?php endforeach; ?>
+                            </ul>
+                        </li>
+
+                      <?php endif; ?>
+
+                      <?php if (Session::get('menu_sekolah')): ?>
+
+                        <li>
+                          <a class="waves-effect waves-dark" aria-expanded="false" href="{{ url('/') }}">
+                            <span class="hide-menu">Dashboard</span>
+                          </a>
+                        </li>
+
+                        <li id="menu-4"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Data Master</span></a>
+                            <ul id="list-4" aria-expanded="false" class="collapse">
+                              <?php $i = 0 ?>
+                              <?php foreach ($menu_sekolah['form_satu'] as $a): ?>
+                                <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
+                              <?php endforeach; ?>
+                            </ul>
+                        </li>
+
+                        <li id="menu-5"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Transaksi</span></a>
+                            <ul id="list-5" aria-expanded="false" class="collapse">
+                              <?php $i = 0 ?>
+                              <?php foreach ($menu_sekolah['form_dua'] as $a): ?>
+                                <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
+                              <?php endforeach; ?>
+                            </ul>
+                        </li>
+
+                        <li id="menu-6"> <a class="has-arrow waves-effect waves-dark" aria-expanded="false"><i class="icon-notebook"></i><span class="hide-menu">Laporan</span></a>
+                            <ul id="list-6" aria-expanded="false" class="collapse">
+                              <?php $i = 0 ?>
+                              <?php foreach ($menu_sekolah['form_tiga'] as $a): ?>
+                                <li><a href="<?= strtolower(str_replace(' ', '-', $a['nama']));?>">{{ $a['nama'] }}</a></li>
                               <?php endforeach; ?>
                             </ul>
                         </li>

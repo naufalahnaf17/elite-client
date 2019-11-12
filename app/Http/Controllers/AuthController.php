@@ -35,7 +35,7 @@ class AuthController extends Controller
 
     } catch (ClientException $e) {
       echo "<script>alert('Session Habis Login Dulu')</script>";
-      return view('SiswaModul.login');
+      return view('SiswaModul.Umum.login');
     }
 
     return Datatables::of($siswa)
@@ -54,12 +54,13 @@ class AuthController extends Controller
 
       if (Session::get('menu_siswa')) {
         $menu_siswa = Session::get('menu_siswa');
-        $form_siswa = Session::get('form_siswa');
-        return view('SiswaModul.dashboard')->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
-      }else {
+        return view('SiswaModul.Umum.dashboard')->with('menu_siswa' , $menu_siswa);
+      }else if(Session::get('menu_admin')) {
         $menu_admin = Session::get('menu_admin');
-        $form_admin = Session::get('form_admin');
-        return view('SiswaModul.dashboard')->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
+        return view('SiswaModul.Umum.dashboard')->with('menu_admin' , $menu_admin);
+      }else {
+        $menu_sekolah = Session::get('menu_sekolah');
+        return view('SiswaModul.Umum.dashboard')->with('menu_sekolah' , $menu_sekolah);
       }
 
     }
@@ -68,14 +69,14 @@ class AuthController extends Controller
 
   public function login(){
     if (!Session::get('login')) {
-      return view('SiswaModul.login');
+      return view('SiswaModul.Umum.login');
     }else {
-      return view('SiswaModul.siswa');
+      return view('SiswaModul.Umum.siswa');
     }
   }
 
   public function register(){
-    return view('SiswaModul.register');
+    return view('SiswaModul.Umum.register');
   }
 
 
@@ -97,7 +98,7 @@ class AuthController extends Controller
 
     } catch (ClientException  $e) {
       echo "<script>alert('Email Atau Password Salah')</script>";
-      return view('SiswaModul.login');
+      return view('SiswaModul.Umum.login');
     }
 
 
@@ -119,7 +120,7 @@ class AuthController extends Controller
 
           } catch (ClientException  $e) {
             echo "<script>alert('Email Atau Password Salah')</script>";
-            return view('SiswaModul.login');
+            return view('SiswaModul.Umum.login');
           }
 
           // If Focus
@@ -140,35 +141,17 @@ class AuthController extends Controller
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('SiswaModul.login');
+                return view('SiswaModul.Umum.login');
               }
 
-              try {
-
-                $cari_form = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/mform/siswa/',[
-                  'headers' => [
-                    'Authorization' => 'Bearer '.$token,
-                    'Accept'     => 'application/json',
-                  ]
-                ]);
-
-              } catch (ClientException  $e) {
-                echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('SiswaModul.login');
-              }
-
-              if ($cari_menu->getStatusCode() == 200 && $cari_form->getStatusCode() == 200 ) { // 200 OK
+              if ($cari_menu->getStatusCode() == 200 ) { // 200 OK
                 $response_menu = $cari_menu->getBody()->getContents();
-                $reponse_form = $cari_form->getBody()->getContents();
                 $menu_siswa = json_decode($response_menu,true);
-                $form_siswa = json_decode($reponse_form,true);
 
                 Session::put('api_token',$data["success"]["token"]);
                 Session::put('menu_siswa',$menu_siswa);
-                Session::put('form_siswa',$form_siswa);
                 Session::put('nama' , $detail['success']['name']);
                 Session::put('url',$detail['success']['url_photo']);
-                Session::put('daftar_menu' , $menu_siswa);
                 Session::put('login',TRUE);
                 return redirect('/');
               }
@@ -186,39 +169,51 @@ class AuthController extends Controller
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('SiswaModul.login');
+                return view('SiswaModul.Umum.login');
               }
 
+              if ($cari_menu->getStatusCode() == 200) { // 200 OK
+                $response_menu = $cari_menu->getBody()->getContents();
+                $menu_admin = json_decode($response_menu,true);
+
+                Session::put('api_token',$data["success"]["token"]);
+                Session::put('menu_admin',$menu_admin);
+                Session::put('nama' , $detail['success']['name']);
+                Session::put('url' , $detail['success']['url_photo']);
+                Session::put('login',TRUE);
+                return redirect('/');
+              }
+
+            }
+
+            if ($kode_menu === 'SEKOLAH') {
               try {
 
-                $admin_form = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/mform/admin/',[
+                $sekolah_form = $client->request('GET', 'http://laravel.simkug.com/siswa-api/public/api/menu/'.$kode_menu,[
                   'headers' => [
                     'Authorization' => 'Bearer '.$token,
                     'Accept'     => 'application/json',
                   ]
-
                 ]);
 
               } catch (ClientException  $e) {
                 echo "<script>alert('Terjadi Kesalahan')</script>";
-                return view('SiswaModul.login');
+                return view('SiswaModul.Umum.login');
               }
 
-              if ($cari_menu->getStatusCode() == 200 && $admin_form->getStatusCode() == 200) { // 200 OK
-                $response_menu = $cari_menu->getBody()->getContents();
-                $response_admin = $admin_form->getBody()->getContents();
-                $menu_admin = json_decode($response_menu,true);
-                $form_admin = json_decode($response_admin,true);
+
+              if ($sekolah_form->getStatusCode() == 200) { // 200 OK
+                $res_menu = $sekolah_form->getBody()->getContents();
+                $menu_sekolah = json_decode($res_menu,true);
 
                 Session::put('api_token',$data["success"]["token"]);
-                Session::put('menu_admin',$menu_admin);
-                Session::put('form_admin',$form_admin);
+                Session::put('menu_sekolah',$menu_sekolah);
                 Session::put('nama' , $detail['success']['name']);
                 Session::put('url' , $detail['success']['url_photo']);
-                Session::put('daftar_menu' , $menu_admin);
                 Session::put('login',TRUE);
                 return redirect('/');
               }
+
             }
 
             // Akhir Mencari Data Menu
@@ -226,10 +221,10 @@ class AuthController extends Controller
           // If Focus
 
         }else{
-            return view('SiswaModul.login');
+            return view('SiswaModul.Umum.login');
         }
     }else{
-        return view('SiswaModul.login');
+        return view('SiswaModul.Umum.login');
     }
 
   }
@@ -266,11 +261,11 @@ class AuthController extends Controller
         if (Session::get('menu_siswa')) {
           $menu_siswa = Session::get('menu_siswa');
           $form_siswa = Session::get('form_siswa');
-          return view('SiswaModul.my-profile' , [ 'data' => $data ])->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
+          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data ])->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
         }else {
           $menu_admin = Session::get('menu_admin');
           $form_admin = Session::get('form_admin');
-          return view('SiswaModul.my-profile' , [ 'data' => $data  ])->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
+          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data  ])->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
         }
 
       }
@@ -365,12 +360,12 @@ class AuthController extends Controller
 
     } catch (ClientException  $e) {
       echo "<script>alert('Terjadi Kesalahan Saat Register')</script>";
-      return view('SiswaModul.login');
+      return view('SiswaModul.Umum.login');
     }
 
 
     if ($response->getStatusCode() == 200) {
-      return view('SiswaModul.login');
+      return view('SiswaModul.Umum.login');
     }
 
   }
