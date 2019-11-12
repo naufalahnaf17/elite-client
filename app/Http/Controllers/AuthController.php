@@ -260,12 +260,13 @@ class AuthController extends Controller
 
         if (Session::get('menu_siswa')) {
           $menu_siswa = Session::get('menu_siswa');
-          $form_siswa = Session::get('form_siswa');
-          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data ])->with('menu_siswa' , $menu_siswa)->with('form_siswa' , $form_siswa);
-        }else {
+          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data ])->with('menu_siswa' , $menu_siswa);
+        }else if(Session::get('menu_admin')) {
           $menu_admin = Session::get('menu_admin');
-          $form_admin = Session::get('form_admin');
-          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data  ])->with('menu_admin' , $menu_admin)->with('form_admin' , $form_admin);
+          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data  ])->with('menu_admin' , $menu_admin);
+        }else {
+          $menu_sekolah = Session::get('menu_sekolah');
+          return view('SiswaModul.Umum.my-profile' , [ 'data' => $data  ])->with('menu_sekolah' , $menu_sekolah);
         }
 
       }
