@@ -140,9 +140,9 @@
         serverSide: true,
         ajax: 'data',
         columns: [
-            { data: 'id', name: 'id' },
+            { data: 'nis', name: 'nis' },
             { data: 'nama', name: 'nama' },
-            { data: 'jurusan', name: 'jurusan' },
+            { data: 'kode_kelas', name: 'kode_kelas' },
             { data: 'action', name: 'action' }
         ]
     });
