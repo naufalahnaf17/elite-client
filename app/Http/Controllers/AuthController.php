@@ -40,8 +40,8 @@ class AuthController extends Controller
 
     return Datatables::of($siswa)
     ->addColumn('action', function($siswa){
-    return '<a style="color:#fff;" onclick="editForm('. $siswa['id'] .')" class="btn btn-primary btn-xs"><i class="fa fa-pencil-alt"></i></a> ' .
-           '<a style="color:#fff;" onclick="deleteData('. $siswa['id'] .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
+    return '<a style="color:#fff;" onclick="editForm('. $siswa['nis'] .')" class="btn btn-primary btn-xs"><i class="fa fa-pencil-alt"></i></a> ' .
+           '<a style="color:#fff;" onclick="deleteData('. $siswa['nis'] .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
     })->make(true);
 
     }

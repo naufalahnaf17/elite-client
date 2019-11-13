@@ -80,7 +80,7 @@
                         <table id="data-siswa" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Id Siswa</th>
+                                    <th>Nis</th>
                                     <th>Nama</th>
                                     <th>Jurusan</th>
                                     <th>Aksi</th>
@@ -199,10 +199,10 @@
 
     }
 
-    function editForm(id){
+    function editForm(nis){
 
       $.ajax({
-          url: "siswa/"+id+"/"+"edit",
+          url: "siswa/"+nis+"/"+"edit",
           type: 'GET',
           dataType : 'JSON',
           success: function (data){
@@ -212,21 +212,21 @@
             $('#edit-data').show();
             $('#formsiswa')[0].reset();
 
-            var id_current = data.id;
+            var nis_current = data.nis;
             $('#nama').val(data.nama);
-            $('#jurusan').val(data.jurusan);
+            $('#jurusan').val(data.kode_kelas);
 
             $('#edit-data').on('click' , function(){
 
               $.ajax({
-                url : "siswa/"+id_current,
+                url : "siswa/"+nis_current,
                 type : "PUT" ,
                 data : $('#formsiswa').serialize(),
                 success : function(){
                   $('#container').show();
                   $('#tambah-siswa').hide();
                   $('#formsiswa')[0].reset();
-                  var id_current = null;
+                  var nis_current = null;
                   $('#data-siswa').DataTable().ajax.reload();
                 },
                 error : function(){
