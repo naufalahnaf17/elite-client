@@ -246,7 +246,7 @@
 
           },
           error : function(){
-            alert('gagal');
+            alert('Gagal');
           }
       });
 

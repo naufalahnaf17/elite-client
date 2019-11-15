@@ -30,21 +30,25 @@
       background-image: url('{{ url("/images/desk.jpg") }}');
       background-repeat: no-repeat;
       background-size: cover;
-      width: 100%;
+	  position: sticky;
+      max-width: 100%;
       height: 100%;
       padding: 0;
       margin: 0;
     }
+	#loginForm{
+		
+	}
   </style>
 
 </head>
 <body>
 
-	<div id="loginForm" class="limiter" style="background-color:#3213;">
+	<div id="loginForm" class="limiter" style="background-color:none;">
 		<div class="container-login100">
-			<div class="wrap-login100 p-t-50 p-b-90"  style="background-color:#fff;padding:35px;">
+			<div class="wrap-login100 p-t-50 p-b-90"  style="background-color:#fff;padding:35px;box-shadow: 0 4px 8px 0 rgba(0.2, 0.2, 0.2, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 				<form id="loginForm" class="login100-form validate-form flex-sb flex-w" action="{{ url('/login') }}" method='post'>
-          @csrf
+          			@csrf
 					<span class="login100-form-title p-b-51">
 						Sign In
 					</span>
